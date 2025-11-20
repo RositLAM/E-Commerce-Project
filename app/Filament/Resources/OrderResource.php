@@ -24,6 +24,7 @@ use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\DeleteAction;
 use App\Filament\Resources\OrderResource\Pages;
+use App\Filament\Resources\OrderResource\RelationManagers\AddressRelationManager;
 use Filament\Support\Enums\Currency;
 use Filament\Support\Facades\Filament;
 use Filament\Tables\Columns\SelectColumn;
@@ -249,7 +250,7 @@ class OrderResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            AddressRelationManager::class
         ];
     }
 
