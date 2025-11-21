@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BrandResource\Pages;
 use App\Filament\Resources\BrandResource\RelationManagers;
 use App\Models\Brand;
-use Filament\Actions\ActionGroup;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms;
@@ -78,18 +78,18 @@ class BrandResource extends Resource
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('is_active')  
-                ->boolean(),
+                Tables\Columns\IconColumn::make('is_active')
+                    ->boolean(),
 
                 Tables\Columns\TextColumn::make('created_at')
-                ->dataTime()
-                ->sortable()
-                ->toggleable(isToggledHiddenByDefault: true),
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('updated_at')
-                ->dataTime()
-                ->sortable()
-                ->toggleable(isToggledHiddenByDefault: true),  
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -99,8 +99,9 @@ class BrandResource extends Resource
                     ViewAction::make(),
                     EditAction::make(),
                     DeleteAction::make(),
-                ])
+                ]),
             ])
+
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
