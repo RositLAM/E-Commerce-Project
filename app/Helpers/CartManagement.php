@@ -44,6 +44,43 @@ class CartManagement {
         self::addCartItemsToCookie($cart_items);
         return count($cart_items);
     }
+    // Add to cart with Qty
+    static public function addItemsToCartWithQty($product_id, $qty = 1) {
+        $cart_items = self::getCartItemsFromCookie();
+
+        $existing_item = null;
+
+        foreach ($cart_items as $key => $item) {
+            if ($item['product_id'] == $product_id) {
+                $existing_item = $key;
+                break;
+            }
+        }
+
+        if ($existing_item !== null) {
+            // Increase quantity
+            $cart_items[$existing_item]['quantity'] = $qty;
+            $cart_items[$existing_item]['total_amount'] =
+                $cart_items[$existing_item]['quantity'] * $cart_items[$existing_item]['unit_amount'];
+        } else {
+            // Add new item
+            $product = Product::find($product_id);
+
+            if ($product) {
+                $cart_items[] = [
+                    'product_id'   => $product_id,
+                    'name'         => $product->name,
+                    'image'        => $product->images[0] ?? null,
+                    'quantity'     => $qty,
+                    'unit_amount'  => $product->price,
+                    'total_amount' => $product->price,
+                ];
+            }
+        }
+
+        self::addCartItemsToCookie($cart_items);
+        return count($cart_items);
+    }
 
     // Remove item from cart
     static public function removeCartItem($product_id) {
