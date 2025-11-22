@@ -2,10 +2,13 @@
 
 namespace App\Livewire;
 
+use App\Helpers\CartManagement;
+use App\Livewire\Partials\Navbar;
 use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Category;
 use Livewire\Attributes\Title;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -13,6 +16,7 @@ use Livewire\WithPagination;
 #[Title('Products - Online&Go')]
 class ProductsPage extends Component
 {
+    use LivewireAlert;
     use WithPagination;
 
     #[Url]
@@ -30,7 +34,22 @@ class ProductsPage extends Component
     public $price_range = 30000;
 
     #[Url]
-    public $sort ='latest';
+    public $sort = 'latest';
+
+    // Add product to cart
+    public function addToCart($product_id)
+    {
+        $total_count = CartManagement::addItemsToCart($product_id);
+
+        $this->dispatch('update-cart-count', total_count: $total_count)
+            ->to(Navbar::class);
+
+        $this->alert('success', 'Product Added To The Cart Successfully!', [
+            'position' => 'bottom-end',
+            'timer'    => 3000,
+            'toast'    => true,
+        ]);
+    }
 
     public function render()
     {
@@ -44,29 +63,29 @@ class ProductsPage extends Component
             $productQuery->whereIn('brand_id', $this->selected_brands);
         }
 
-        if($this->featured){
-            $productQuery->where('price', [0, $this->price_range]);
+        if ($this->featured) {
+            $productQuery->where('featured', 1); // Adjust if your table uses different column name
         }
 
-          if($this->on_sale){
+        if ($this->on_sale) {
             $productQuery->where('on_sale', 1);
         }
 
-        if($this->price_range){
+        if ($this->price_range) {
             $productQuery->whereBetween('price', [0, $this->price_range]);
         }
 
-        if($this->sort == 'latest'){
+        if ($this->sort === 'latest') {
             $productQuery->latest();
         }
 
-        if($this->sort == 'price'){
+        if ($this->sort === 'price') {
             $productQuery->orderBy('price');
         }
 
         return view('livewire.products-page', [
-            'products' => $productQuery->paginate(9),
-            'brands' => Brand::where('is_active', 1)->get(['id', 'name', 'slug']),
+            'products'   => $productQuery->paginate(9),
+            'brands'     => Brand::where('is_active', 1)->get(['id', 'name', 'slug']),
             'categories' => Category::where('is_active', 1)->get(['id', 'name', 'slug']),
         ]);
     }

@@ -72,7 +72,7 @@ class CartManagement {
         Cookie::queue(Cookie::forget('cart_items'));
     }
 
-    // Read cart from cookie
+    // get cart from cookie
     static public function getCartItemsFromCookie() {
         $cart_items = json_decode(Cookie::get('cart_items'), true);
         return $cart_items ?: [];
