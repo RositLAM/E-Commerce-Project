@@ -8,16 +8,16 @@ use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Category;
 use Livewire\Attributes\Title;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 
 #[Title('Products - Online&Go')]
 class ProductsPage extends Component
 {
-    use LivewireAlert;
     use WithPagination;
+
 
     #[Url]
     public $selected_categories = [];
@@ -31,25 +31,37 @@ class ProductsPage extends Component
     #[Url]
     public $on_sale;
 
-    public $price_range = 30000;
-
     #[Url]
     public $sort = 'latest';
 
-    // Add product to cart
+    public $price_range = 30000;
+
+
     public function addToCart($product_id)
     {
         $total_count = CartManagement::addItemsToCart($product_id);
 
         $this->dispatch('update-cart-count', total_count: $total_count)
-            ->to(Navbar::class);
+             ->to(Navbar::class);
 
-        $this->alert('success', 'Product Added To The Cart Successfully!', [
-            'position' => 'bottom-end',
-            'timer'    => 3000,
-            'toast'    => true,
-        ]);
+        LivewireAlert::title('Success')
+            ->text('Product Added To The Cart Successfully!')
+            ->position('bottom-end')
+            ->toast()
+            ->timer(3000)
+            ->success()
+            ->show();
     }
+
+
+    public function someAction()
+    {
+        LivewireAlert::title('Hello')
+            ->text('This is a v4 alert')
+            ->success()
+            ->show();
+    }
+
 
     public function render()
     {
@@ -64,7 +76,7 @@ class ProductsPage extends Component
         }
 
         if ($this->featured) {
-            $productQuery->where('featured', 1); // Adjust if your table uses different column name
+            $productQuery->where('featured', 1);
         }
 
         if ($this->on_sale) {
@@ -77,9 +89,7 @@ class ProductsPage extends Component
 
         if ($this->sort === 'latest') {
             $productQuery->latest();
-        }
-
-        if ($this->sort === 'price') {
+        } elseif ($this->sort === 'price') {
             $productQuery->orderBy('price');
         }
 
