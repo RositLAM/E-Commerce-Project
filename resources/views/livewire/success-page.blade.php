@@ -28,7 +28,7 @@
           <p class="mb-2 text-sm leading-5 text-gray-600 dark:text-gray-400 ">
             Date: </p>
           <p class="text-base font-semibold leading-4 text-gray-800 dark:text-gray-400">
-            {{ $order->created_at->format('d-m-y') }}</p>
+            {{ $order->created_at->format('d-m-Y') }}</p>
         </div>
         <div class="w-full px-4 mb-4 md:w-1/4">
           <p class="mb-2 text-sm font-medium leading-5 text-gray-800 dark:text-gray-400 ">

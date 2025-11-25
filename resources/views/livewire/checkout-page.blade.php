@@ -151,7 +151,7 @@
 						Subtotal
 					</span>
 					<span>
-						{{ Number::currency($grand_total, '₱') }}
+						{{ Number::currency($grand_total, 'php') }}
 					</span>
 				</div>
 				<div class="flex justify-between mb-2 font-bold">
@@ -159,7 +159,7 @@
 						Taxes
 					</span>
 					<span>
-						{{ Number::currency(0, '₱') }}
+						{{ Number::currency(0, 'php') }}
 					</span>
 				</div>
 				<div class="flex justify-between mb-2 font-bold">
@@ -167,7 +167,7 @@
 						Shipping Cost
 					</span>
 					<span>
-						{{ Number::currency(0, '₱') }}
+						{{ Number::currency(0, 'php') }}
 					</span>
 				</div>
 				<hr class="bg-slate-400 my-4 h-1 rounded">
@@ -176,7 +176,7 @@
 						Grand Total
 					</span>
 					<span>
-						{{ Number::currency($grand_total, '₱') }}
+						{{ Number::currency($grand_total, 'php') }}
 					</span>
 				</div>
 				</hr>
@@ -207,7 +207,7 @@
 								</p>
 							</div>
 							<div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-								{{ Number::currency($ci['total_amount'], '₱') }}
+								{{ Number::currency($ci['total_amount'], 'php') }}
 							</div>
 						</div>
 					</li>
